@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - 'claude/**'
     paths:
       - 'services/hrms-tools/**'
       - '.github/workflows/docker-build.yml'
