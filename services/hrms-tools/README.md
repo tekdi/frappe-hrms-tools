@@ -138,6 +138,12 @@ docker-compose -f docker-compose.registry.yml logs -f
 - `<branch-name>` - Latest build from specific branch
 - `<branch-name>-<commit-sha>` - Specific commit
 
+**Supported platforms:**
+- `linux/amd64` - Intel/AMD processors (works on Intel Macs, Linux, Windows)
+- `linux/arm64` - ARM processors (works on Apple Silicon Macs, ARM servers)
+
+Docker automatically selects the correct architecture for your system.
+
 **Note:** If the repository is private, authenticate first:
 ```bash
 echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin

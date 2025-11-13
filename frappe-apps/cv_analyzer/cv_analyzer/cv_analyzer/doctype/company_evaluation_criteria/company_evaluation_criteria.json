@@ -1,0 +1,106 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-11-13 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "company_information_section",
+  "company_name",
+  "section_break_1",
+  "company_values",
+  "evaluation_guidelines",
+  "section_break_2",
+  "disqualifiers",
+  "section_break_3",
+  "preferred_backgrounds"
+ ],
+ "fields": [
+  {
+   "fieldname": "company_information_section",
+   "fieldtype": "Section Break",
+   "label": "Company Information"
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "label": "Company Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_1",
+   "fieldtype": "Section Break",
+   "label": "Evaluation Criteria"
+  },
+  {
+   "description": "Core company values (one per line)",
+   "fieldname": "company_values",
+   "fieldtype": "Small Text",
+   "label": "Company Core Values"
+  },
+  {
+   "description": "General guidelines for evaluating all candidates",
+   "fieldname": "evaluation_guidelines",
+   "fieldtype": "Text Editor",
+   "label": "Evaluation Guidelines"
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Disqualifiers"
+  },
+  {
+   "description": "Automatic disqualification criteria (one per line)",
+   "fieldname": "disqualifiers",
+   "fieldtype": "Small Text",
+   "label": "Disqualifying Criteria"
+  },
+  {
+   "fieldname": "section_break_3",
+   "fieldtype": "Section Break",
+   "label": "Preferences"
+  },
+  {
+   "description": "Preferred educational or professional backgrounds (one per line)",
+   "fieldname": "preferred_backgrounds",
+   "fieldtype": "Small Text",
+   "label": "Preferred Backgrounds"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-11-13 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "CV Analyzer",
+ "name": "Company Evaluation Criteria",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "HR User"
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

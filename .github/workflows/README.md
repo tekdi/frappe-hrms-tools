@@ -16,6 +16,7 @@ Automatically builds and tests the CV Analysis Service Docker image.
 
 **Features:**
 - ✅ Builds Docker image for CV Analysis Service
+- ✅ Multi-architecture support (AMD64 + ARM64)
 - ✅ Runs health checks to verify the image works
 - ✅ Pushes to GitHub Container Registry (ghcr.io) on main branch
 - ✅ Uses layer caching for faster builds
@@ -31,16 +32,28 @@ Automatically builds and tests the CV Analysis Service Docker image.
 - `<branch-name>` - Latest build from specific branch
 - `<branch-name>-<sha>` - Specific commit from a branch
 
+**Supported Platforms:**
+- `linux/amd64` - Intel/AMD x86_64 processors (Linux, Windows, Intel Macs)
+- `linux/arm64` - ARM 64-bit processors (Apple Silicon Macs, ARM servers, Raspberry Pi 4+)
+
+Docker automatically pulls the correct architecture for your system.
+
 ## Using the Docker Images
 
 ### Pull from GitHub Container Registry
 
 ```bash
-# Pull latest version
+# Pull latest version (automatically selects correct architecture)
 docker pull ghcr.io/tekdi/frappe-hrms-tools/cv-analysis-service:latest
 
 # Pull specific version
 docker pull ghcr.io/tekdi/frappe-hrms-tools/cv-analysis-service:main
+
+# The image works on:
+# - Intel/AMD Linux servers
+# - Intel Macs
+# - Apple Silicon Macs (M1, M2, M3)
+# - ARM servers and development boards
 ```
 
 ### Run the container
