@@ -11,6 +11,7 @@ AI-powered microservice for analyzing candidate CVs against position requirement
 - **Audit Logging**: Complete audit trail with SQLite database
 - **RESTful API**: Clean, well-documented API with FastAPI
 - **Docker Ready**: Easy deployment with Docker and docker-compose
+- **CI/CD Pipeline**: Automated Docker builds via GitHub Actions
 
 ## 📋 Table of Contents
 
@@ -21,6 +22,7 @@ AI-powered microservice for analyzing candidate CVs against position requirement
 - [API Documentation](#api-documentation)
 - [Development](#development)
 - [Testing](#testing)
+- [CI/CD Pipeline](#cicd-pipeline)
 
 ## 🏗️ Architecture
 
@@ -104,6 +106,41 @@ docker-compose up -d
 3. **Check logs**
 ```bash
 docker-compose logs -f
+```
+
+### Using Pre-built Docker Images (Recommended for Production)
+
+The repository includes a CI/CD pipeline that automatically builds and publishes Docker images to GitHub Container Registry.
+
+1. **Configure environment**
+```bash
+cp .env.example .env
+# Edit .env and add your API keys
+```
+
+2. **Use the pre-built image**
+```bash
+# Pull latest image
+docker pull ghcr.io/tekdi/frappe-hrms-tools/cv-analysis-service:latest
+
+# Run with docker-compose
+docker-compose -f docker-compose.registry.yml up -d
+```
+
+3. **Check logs**
+```bash
+docker-compose -f docker-compose.registry.yml logs -f
+```
+
+**Available image tags:**
+- `latest` - Latest build from main branch
+- `main` - Latest build from main branch
+- `<branch-name>` - Latest build from specific branch
+- `<branch-name>-<commit-sha>` - Specific commit
+
+**Note:** If the repository is private, authenticate first:
+```bash
+echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
 ```
 
 ## ⚙️ Configuration
@@ -304,14 +341,67 @@ services/hrms-tools/
 
 ## 🧪 Testing
 
+### Automated Test Suite
+
+A comprehensive test script is provided to validate the service:
+
+```bash
+cd tests
+
+# Install test dependencies
+pip install -r requirements.txt
+
+# Run all tests (health check + full CV analysis)
+python test_service.py
+
+# Or use the convenience script
+./run_tests.sh
+```
+
+**Test Options:**
+
+```bash
+# Health check only
+python test_service.py --health-only
+
+# Test with specific LLM provider
+python test_service.py --provider openai
+python test_service.py --provider anthropic
+python test_service.py --provider gemini
+
+# Test against different URL
+python test_service.py --url http://my-server:8000
+```
+
+**What the Test Does:**
+- ✅ Validates service health and configuration
+- ✅ Generates a realistic sample CV (PDF)
+- ✅ Sends CV for complete analysis
+- ✅ Validates response structure
+- ✅ Displays detailed results
+- ✅ Saves full response to JSON file
+
+**Sample Output:**
+
+The test script provides colorized, detailed output including:
+- Overall score and recommendation
+- Section-wise scores with rationale
+- Key strengths and critical gaps
+- Follow-up interview questions
+- Processing metadata (tokens, time, provider)
+
+See [tests/README.md](tests/README.md) for detailed documentation.
+
 ### Manual Testing
 
 ```bash
 # Check health
 curl http://localhost:8000/api/v1/health
 
-# Test with sample CV
-python scripts/test_analysis.py
+# Test with curl
+curl -X POST http://localhost:8000/api/v1/analyze \
+  -H "Content-Type: application/json" \
+  -d @sample_request.json
 ```
 
 ### Viewing Audit Logs
@@ -394,6 +484,53 @@ docker-compose down
 docker-compose build --no-cache
 docker-compose up -d
 ```
+
+## 🔄 CI/CD Pipeline
+
+The repository includes a GitHub Actions workflow that automatically builds and tests Docker images.
+
+### Workflow Triggers
+
+- **Push to main**: Builds, tests, and pushes image to registry
+- **Push to feature branches**: Builds and tests only
+- **Pull requests**: Builds and tests only
+- **Manual dispatch**: Can be triggered manually from GitHub Actions UI
+
+### Build Status
+
+Check the build status of the latest CI/CD run:
+
+[![Docker Build](https://github.com/tekdi/frappe-hrms-tools/actions/workflows/docker-build.yml/badge.svg)](https://github.com/tekdi/frappe-hrms-tools/actions/workflows/docker-build.yml)
+
+### Automated Tests
+
+The CI/CD pipeline includes:
+- Docker image build
+- Container health checks
+- API endpoint validation
+- Service startup verification
+
+### Image Publishing
+
+Successfully built images are automatically published to:
+- **Registry**: GitHub Container Registry (ghcr.io)
+- **Repository**: `ghcr.io/tekdi/frappe-hrms-tools/cv-analysis-service`
+
+### Manual Workflow Trigger
+
+You can manually trigger a build:
+
+1. Go to the **Actions** tab in GitHub
+2. Select **Docker Build and Push** workflow
+3. Click **Run workflow**
+4. Choose the branch and whether to push to registry
+
+### Viewing Published Images
+
+View all published images:
+1. Go to the repository main page
+2. Click on **Packages** in the right sidebar
+3. Select **cv-analysis-service**
 
 ## 📝 License
 
