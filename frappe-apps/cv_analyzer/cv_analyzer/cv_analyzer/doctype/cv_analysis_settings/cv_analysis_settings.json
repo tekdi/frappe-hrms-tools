@@ -1,0 +1,113 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-11-13 10:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "service_configuration_section",
+  "service_url",
+  "api_version",
+  "column_break_1",
+  "default_llm_provider",
+  "default_prompt_version",
+  "section_break_2",
+  "auto_analyze_on_cv_upload",
+  "column_break_2",
+  "show_analysis_in_dashboard"
+ ],
+ "fields": [
+  {
+   "fieldname": "service_configuration_section",
+   "fieldtype": "Section Break",
+   "label": "Service Configuration"
+  },
+  {
+   "default": "http://localhost:8000",
+   "fieldname": "service_url",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "CV Analysis Service URL",
+   "reqd": 1
+  },
+  {
+   "default": "v1",
+   "fieldname": "api_version",
+   "fieldtype": "Data",
+   "label": "API Version",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "auto",
+   "fieldname": "default_llm_provider",
+   "fieldtype": "Select",
+   "label": "Default LLM Provider",
+   "options": "auto\nopenai\nanthropic\ngemini",
+   "reqd": 1
+  },
+  {
+   "default": "v1",
+   "fieldname": "default_prompt_version",
+   "fieldtype": "Data",
+   "label": "Default Prompt Version",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_2",
+   "fieldtype": "Section Break",
+   "label": "Automation Settings"
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_analyze_on_cv_upload",
+   "fieldtype": "Check",
+   "label": "Auto-analyze on CV Upload"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_analysis_in_dashboard",
+   "fieldtype": "Check",
+   "label": "Show Analysis in Dashboard"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-11-13 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "CV Analyzer",
+ "name": "CV Analysis Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "HR Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

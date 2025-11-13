@@ -1,0 +1,29 @@
+[build-system]
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "cv_analyzer"
+authors = [
+    {name = "TEKDI", email = "info@tekdi.net"}
+]
+description = "AI-powered CV analysis integration for Frappe HRMS"
+requires-python = ">=3.10"
+readme = "README.md"
+dynamic = ["version"]
+dependencies = [
+    "frappe",
+    "requests>=2.31.0"
+]
+
+[project.urls]
+Home = "https://github.com/tekdi/frappe-hrms-tools"
+Documentation = "https://github.com/tekdi/frappe-hrms-tools/blob/main/frappe-apps/cv_analyzer/README.md"
+
+[project.optional-dependencies]
+dev = [
+    "frappe-dev-tools"
+]
+
+[tool.bench.dev-dependencies]
+# To be used while setting up dev environment
