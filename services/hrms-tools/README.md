@@ -341,14 +341,67 @@ services/hrms-tools/
 
 ## 🧪 Testing
 
+### Automated Test Suite
+
+A comprehensive test script is provided to validate the service:
+
+```bash
+cd tests
+
+# Install test dependencies
+pip install -r requirements.txt
+
+# Run all tests (health check + full CV analysis)
+python test_service.py
+
+# Or use the convenience script
+./run_tests.sh
+```
+
+**Test Options:**
+
+```bash
+# Health check only
+python test_service.py --health-only
+
+# Test with specific LLM provider
+python test_service.py --provider openai
+python test_service.py --provider anthropic
+python test_service.py --provider gemini
+
+# Test against different URL
+python test_service.py --url http://my-server:8000
+```
+
+**What the Test Does:**
+- ✅ Validates service health and configuration
+- ✅ Generates a realistic sample CV (PDF)
+- ✅ Sends CV for complete analysis
+- ✅ Validates response structure
+- ✅ Displays detailed results
+- ✅ Saves full response to JSON file
+
+**Sample Output:**
+
+The test script provides colorized, detailed output including:
+- Overall score and recommendation
+- Section-wise scores with rationale
+- Key strengths and critical gaps
+- Follow-up interview questions
+- Processing metadata (tokens, time, provider)
+
+See [tests/README.md](tests/README.md) for detailed documentation.
+
 ### Manual Testing
 
 ```bash
 # Check health
 curl http://localhost:8000/api/v1/health
 
-# Test with sample CV
-python scripts/test_analysis.py
+# Test with curl
+curl -X POST http://localhost:8000/api/v1/analyze \
+  -H "Content-Type: application/json" \
+  -d @sample_request.json
 ```
 
 ### Viewing Audit Logs
