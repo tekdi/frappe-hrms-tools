@@ -191,8 +191,23 @@ class CVAnalyzer:
             CVAnalyzerError: If parsing fails
         """
         try:
+            # Clean the content - some LLMs wrap JSON in markdown code blocks
+            cleaned_content = llm_content.strip()
+
+            # Remove markdown code block markers if present
+            if cleaned_content.startswith('```'):
+                # Find the first newline after opening ```
+                first_newline = cleaned_content.find('\n')
+                if first_newline != -1:
+                    # Remove opening ``` and language identifier
+                    cleaned_content = cleaned_content[first_newline + 1:]
+
+                # Remove closing ```
+                if cleaned_content.endswith('```'):
+                    cleaned_content = cleaned_content[:-3].rstrip()
+
             # Try to parse as JSON
-            result = json.loads(llm_content)
+            result = json.loads(cleaned_content)
 
             # Validate required fields
             required_fields = [
@@ -208,7 +223,8 @@ class CVAnalyzer:
 
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse LLM response as JSON: {e}")
-            logger.error(f"LLM response content: {llm_content[:500]}...")
+            logger.error(f"LLM response content (first 500 chars): {llm_content[:500]}...")
+            logger.error(f"Cleaned content (first 500 chars): {cleaned_content[:500] if 'cleaned_content' in locals() else 'N/A'}...")
             raise CVAnalyzerError("LLM did not return valid JSON. Please try again.")
 
     def _build_response(
