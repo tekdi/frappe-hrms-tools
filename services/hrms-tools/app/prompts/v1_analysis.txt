@@ -1,0 +1,12 @@
+CV Analysis Prompt Template v1
+
+This template is used for structured CV analysis against position requirements.
+
+Key Features:
+- Comprehensive evaluation across multiple dimensions
+- Weighted scoring system
+- Evidence-based assessment
+- Actionable follow-up questions
+
+Version: 1.0
+Last Updated: 2025-11-13
