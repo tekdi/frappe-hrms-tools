@@ -1,0 +1,81 @@
+# Docker Compose configuration for using pre-built images from GitHub Container Registry
+# This is useful for production deployments where you want to use CI/CD built images
+
+version: '3.8'
+
+services:
+  cv-analysis-service:
+    # Use pre-built image from GitHub Container Registry
+    image: ghcr.io/tekdi/frappe-hrms-tools/cv-analysis-service:latest
+
+    container_name: cv-analysis-service
+
+    ports:
+      - "8000:8000"
+
+    environment:
+      # Application settings
+      - DEBUG=false
+      - APP_NAME=CV Analysis Service
+      - APP_VERSION=1.0.0
+
+      # Default LLM provider (openai, anthropic, gemini, or auto)
+      - DEFAULT_LLM_PROVIDER=auto
+
+      # OpenAI Configuration
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4-turbo-preview}
+      - OPENAI_TEMPERATURE=0.3
+      - OPENAI_MAX_TOKENS=4000
+
+      # Anthropic Configuration
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}
+      - ANTHROPIC_MODEL=${ANTHROPIC_MODEL:-claude-3-5-sonnet-20241022}
+      - ANTHROPIC_TEMPERATURE=0.3
+      - ANTHROPIC_MAX_TOKENS=4000
+
+      # Gemini Configuration
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-1.5-pro}
+      - GEMINI_TEMPERATURE=0.3
+      - GEMINI_MAX_TOKENS=4000
+
+      # Database
+      - DATABASE_PATH=database/audit_logs.db
+
+      # Limits
+      - MAX_FILE_SIZE_MB=10
+      - REQUEST_TIMEOUT_SECONDS=120
+
+    volumes:
+      # Persist audit logs
+      - ./database:/app/database
+      # Mount prompts directory for easy updates without rebuilding
+      - ./app/prompts:/app/app/prompts
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/api/v1/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+    # Optionally configure logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  default:
+    name: cv-analysis-network
+
+# To use this file:
+# 1. Make sure you have a .env file with your API keys
+# 2. If the repository is private, login to GitHub Container Registry:
+#    echo $GITHUB_TOKEN | docker login ghcr.io -u USERNAME --password-stdin
+# 3. Run: docker-compose -f docker-compose.registry.yml up -d
+# 4. Check logs: docker-compose -f docker-compose.registry.yml logs -f
