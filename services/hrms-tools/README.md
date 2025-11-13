@@ -410,3 +410,4 @@ Contributions welcome! Please:
 ## 📧 Support
 
 For issues and questions, please use the GitHub issue tracker.
+This has APIs to enable various capabilities needed by the HRMS. 
